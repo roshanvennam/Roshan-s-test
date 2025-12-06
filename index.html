@@ -502,7 +502,7 @@
                 card.dataset.index = index; 
                 
                 card.style.zIndex = 4 - index;
-                card.style.transform = `rotateY(${index * 180}deg) translateX(${index * 5}px) translateZ(${-index * 10}px)`;
+                card.style.transform = `rotateY(${index * 5}deg) translateX(${index * 5}px) translateZ(${-index * 10}px)`;
                 card.style.opacity = 1 - (index * 0.2);
             });
         }
