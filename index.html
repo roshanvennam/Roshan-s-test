@@ -291,6 +291,504 @@
 <body>
 
     <audio id="birthday-music" loop>
+        <source src="https://dying-violet-vytduthcbd-f51it3g9c6.edgeone.dev/Rakesh.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="border-banner"></div>
+
+    <div id="custom-data" style="display: none;">
+        <div id="recipient-name">My Dear Dad</div>
+        
+        <div id="photo-data">
+            <div data-url="https://uploads.onecompiler.io/444wznkg5/446rsey5x/0891f491-fbaf-4bd1-8935-c050e9c598ad-1_all_5645.jpg" data-message="A faithful father,a blessing from the Lord."></div>
+            <div data-url="https://uploads.onecompiler.io/444wznkg5/446rsey5x/0891f491-fbaf-4bd1-8935-c050e9c598ad-1_all_6058.jpg" data-message="Through his life, God has blessed our family."></div>
+            <div data-url="https://uploads.onecompiler.io/444wznkg5/446rsey5x/11235.jpg" data-message="Your love reflects God's care for us."></div>
+            <div data-url="https://uploads.onecompiler.io/444wznkg5/446rsey5x/11211.jpg" data-message="A true blessing in our life."></div>
+        </div>
+        
+        <div id="balloon-messages">
+            <div data-message="We"></div>
+            <div data-message="Love"></div>
+            <div data-message="You"></div>
+            <div data-message="Dad"></div>
+        </div>
+
+        <div id="final-message-text">
+            <h3 style="color: var(--secondary-color); margin-bottom: 15px; font-style: italic;">"                                                  The righteous man walks in his integrity; his children are blessed after him. Proverbs 20:7</h3>
+            <p>My dearest <span id="display-name-final"></span>,</p>
+            <p style="margin-top: 30px;">Happy Birthday, Dad.
+
+Today we thank God for your life, your love, and your constant care for our family. You are our strength, our guide, and our safe place. Your sacrifices, wisdom, and prayers mean more to us than words can express. We are truly blessed to have you as our father and husband. May God grant you long life, good health, and deep peace, and may His favor always rest upon you. We love you deeply.
+
+WITH LOVE YOUR ROSHAN,SHARLENA,SHAKEENA</p>
+            <p style="margin-top: -150px; font-style: italic;"></p>
+        </div>
+    </div>
+    <div class="container">
+        <div id="step-1" class="step active">
+            <i class="fas fa-cross angel-icon"></i>
+            <h2>A Heavenly Message Awaits...</h2>
+            <p style="margin-top: 10px;">Tap below to begin your journey of grace and love.
+            For Birthday</p>
+            <button class="ui-button" id="start-journey-button" onclick="startJourney()">
+                <i class="fas fa-feather-alt"></i> Begin the Blessing
+            </button>
+        </div>
+
+        <div id="step-2" class="step">
+            <h2>May Your Light Shine Brightly</h2>
+            <div id="cake-container">
+                <div class="cake"></div>
+                <div id="candle" class="candle">
+                    <div id="flame" class="flame"></div>
+                </div>
+            </div>
+            <button id="light-button" class="ui-button" onclick="lightCandle()">
+                <i class="fas fa-hand-sparkles"></i> Light the Candle
+            </button>
+            <button id="next-step-3" class="ui-button" style="display: none;" onclick="nextStep(3)">
+                Next Blessing &rarr;
+            </button>
+        </div>
+
+        <div id="step-3" class="step">
+            <h2>Sweet Moments of Family</h2>
+            <p> TAP the cards to reveal the next memory.</p>
+            <div id="photo-carousel">
+                </div>
+            <button class="ui-button" onclick="nextStep(4)">
+                Open Divine Secret &rarr;
+            </button>
+        </div>
+        
+        <div id="step-4" class="step">
+            <h2>Pop the Balloons of Virtue</h2>
+            <div id="balloon-grid">
+                </div>
+            <button id="next-step-5" class="ui-button" style="display: none;" onclick="nextStep(5)">
+                Receive the Final Card &rarr;
+            </button>
+        </div>
+
+        <div id="step-5" class="step">
+            <h2>A Special Message From ROSHAN</h2>
+            <div id="final-card-container" onclick="toggleFinalCard()">
+                <div id="final-card" class="card">
+                    <div class="card-face card-front">
+                        <i class="fas fa-feather-alt angel-icon"></i>
+                        <h1>Happy Birthday, <span id="display-name-front"></span>!</h1>
+                        <p style="font-style: italic;">A message of eternal love awaits.</p>
+                        <button class="ui-button" style="margin-top: 10px; background: var(--accent-color); color: var(--secondary-color);">
+                            Tap to Open
+                        </button>
+                    </div>
+                    
+                    <div class="card-face card-back" id="final-card-message">
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const STEPS = 5;
+        let currentStep = 1;
+        let poppedBalloons = 0;
+        let totalBalloons = 0;
+        let photoCards = []; 
+
+        // --- 1. INITIAL SETUP & CONTENT INJECTION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const name = document.getElementById('recipient-name').textContent;
+            
+            document.getElementById('display-name-front').textContent = name;
+            document.getElementById('display-name-final').textContent = name;
+            document.getElementById('final-card-message').innerHTML = document.getElementById('final-message-text').innerHTML;
+
+            setupMusic();
+            createBackgroundDecorations();
+            setupPhotoCarousel();
+            setupBalloons();
+        });
+
+        // --- FIX: COMBINED START FUNCTION ---
+        function startJourney() {
+            const audio = document.getElementById('birthday-music');
+            audio.muted = false; 
+            audio.play().catch(e => {
+                console.log("Music autoplay failed. Proceeding with steps.");
+            });
+            nextStep(2); // Move to the next step
+        }
+        // --- END FIX FUNCTION ---
+
+
+        // --- 2. STEP MANAGEMENT & NAVIGATION ---
+        function nextStep(stepNumber) {
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            currentStep = stepNumber;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            
+            if (currentStep === 3) {
+                resetPhotoCarousel();
+            }
+        }
+
+        // --- 3. BACKGROUND DECORATIONS ---
+        function createBackgroundDecorations() {
+            const particleData = [
+                { class: 'heart', icon: '<i class="fas fa-heart"></i>', count: 15 },
+                { class: 'angel', icon: '<i class="fas fa-cross"></i>', count: 5 },
+                { class: 'angel', icon: '<i class="fas fa-feather-alt"></i>', count: 5 }
+            ];
+
+            particleData.forEach(data => {
+                for (let i = 0; i < data.count; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('decoration-particle', data.class);
+                    particle.innerHTML = data.icon;
+                    particle.style.left = `${Math.random() * 100}vw`;
+                    particle.style.animationDelay = `${Math.random() * -15}s`;
+                    document.body.appendChild(particle);
+                }
+            });
+        }
+
+        // --- 4. CAKE AND CANDLE LOGIC ---
+        function lightCandle() {
+            const flame = document.getElementById('flame');
+            flame.classList.add('lit');
+            document.getElementById('light-button').style.display = 'none';
+            document.getElementById('next-step-3').style.display = 'block';
+        }
+        
+        // --- 5. PHOTO CAROUSEL LOGIC (Swiping) ---
+        function resetPhotoCarousel() {
+            // Restore the initial stack order
+            photoCards.forEach((card, index) => {
+                card.dataset.index = index;
+                card.style.zIndex = 4 - index;
+                card.style.transform = `rotateY(${index * 5}deg) translateX(${index * 0}px) translateZ(${-index * 50}px)`;
+                card.style.opacity = 1 - (index * 0.2);
+            });
+        }
+
+        function setupPhotoCarousel() {
+            const carousel = document.getElementById('photo-carousel');
+            const photoDataElements = document.querySelectorAll('#photo-data > div');
+            photoCards = [];
+
+            photoDataElements.forEach((data, index) => {
+                const card = document.createElement('div');
+                card.classList.add('photo-card');
+                card.id = `photo-card-${index}`;
+                card.dataset.index = index;
+                card.innerHTML = `
+                    <img src="${data.dataset.url}" alt="Memory ${index + 1}">
+                    <p>${data.dataset.message}</p>
+                `;
+                carousel.appendChild(card);
+                photoCards.push(card);
+            });
+            
+            carousel.addEventListener('click', swipeCard);
+            resetPhotoCarousel(); // Initialize the stack
+        }
+
+        function swipeCard() {
+            if (photoCards.length <= 1) return;
+
+            // Move the first card to the end of the array (simulating putting it at the back)
+            const topCard = photoCards.shift();
+            photoCards.push(topCard);
+
+            // Reapply new Z-index and transform based on new array order
+            photoCards.forEach((card, index) => {
+                card.dataset.index = index; 
+                
+                card.style.zIndex = 4 - index;
+                card.style.transform = `rotateY(${index * 5}deg) translateX(${index * 0}px) translateZ(${-index * 5}px)`;
+                card.style.opacity = 1 - (index * 0.2);
+            });
+        }
+
+
+        // --- 6. BALLOON POP LOGIC ---
+        function setupBalloons() {
+            const grid = document.getElementById('balloon-grid');
+            const balloonMessages = document.querySelectorAll('#balloon-messages > div');
+            totalBalloons = balloonMessages.length;
+            poppedBalloons = 0;
+
+            const balloonColors = ['#f44336', '#2196f3', '#00bcd4', '#ff9800']; 
+
+            balloonMessages.forEach((data, index) => {
+                const item = document.createElement('div');
+                item.classList.add('balloon-item');
+                item.innerHTML = `
+                    <span class="balloon-icon" style="color: ${balloonColors[index % balloonColors.length]};">&#x1F388;</span>
+                    <div class="balloon-message">${data.dataset.message}</div>
+                `;
+                item.addEventListener('click', () => popBalloon(item));
+                grid.appendChild(item);
+            });
+           }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* --- 2. Interactive Step Management --- */
+        .step {
+            display: none; /* Set display to none by default */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            min-height: 60vh;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .step.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        /* --- Buttons and UI --- */
+        .ui-button {
+            background: var(--secondary-color);
+            color: var(--accent-color);
+            padding: 12px 25px;
+            border: 2px solid var(--primary-color);
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .ui-button:hover {
+            background: var(--primary-color);
+            color: var(--secondary-color);
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        /* --- 3. Background Decorations (Angelic/Christian/Hearts) --- */
+        .decoration-particle {
+            position: absolute;
+            opacity: 0;
+            animation: float-up 15s linear infinite;
+            z-index: 1;
+            font-size: 1.5em;
+            pointer-events: none;
+        }
+
+        .decoration-particle.heart { color: var(--secondary-color); }
+        .decoration-particle.angel { color: var(--primary-color); }
+
+        @keyframes float-up {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.8; }
+            100% { transform: translateY(-50vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Decorative Site Borders (Banner) */
+        .border-banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+            z-index: 20;
+            clip-path: polygon(0 0, 100% 0, 100% 75%, 50% 100%, 0 75%);
+        }
+
+        /* --- 4. Cake and Candle --- */
+        #cake-container {
+            position: relative;
+            margin: 30px auto;
+            width: 250px;
+            height: 200px;
+        }
+        .cake {
+            width: 100%;
+            height: 100%;
+            background: url('https://uploads.onecompiler.io/444wznkg5/444wzrjm6/cake-vector-flat-illustration-cartoon-bakery-food_559729-343.png') center/contain no-repeat; 
+        }
+        .candle {
+            position: absolute;
+            top: 38%;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            width: 10px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 2px;
+            transition: all 0.5s;
+        }
+        .flame {
+            position: absolute;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 15px;
+            background: orange;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 5px yellow, 0 0 20px 10px orange;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .flame.lit {
+            opacity: 1;
+        }
+
+        /* --- 5. Balloon Pop Screen --- */
+        #balloon-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+            width: 100%;
+        }
+        .balloon-item {
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .balloon-icon {
+            font-size: 3em;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .balloon-item.popped .balloon-icon {
+            transform: scale(0);
+            opacity: 0;
+        }
+        .balloon-message {
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: var(--secondary-color);
+            font-weight: 700;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .balloon-item.popped .balloon-message {
+            opacity: 1;
+        }
+
+        /* --- 6. Photo Swipe Carousel (Simplified 3D) --- */
+        #photo-carousel {
+            position: relative;
+            width: 300px;
+            height: 350px;
+            margin: 20px auto;
+            perspective: 1000px;
+        }
+        .photo-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.6s, opacity 0.6s, z-index 0.6s;
+            transform-style: preserve-3d;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .photo-card img {
+            width: 95%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 5px;
+        }
+        .photo-card p {
+            font-size: 0.9em;
+            color: var(--text-color);
+            margin: 5px 0 0;
+        }
+        /* Initial stack effect defined via data-index */
+        .photo-card[data-index="0"] { z-index: 4; transform: rotateY(0deg) translateZ(0px); }
+        .photo-card[data-index="1"] { z-index: 3; transform: rotateY(5deg) translateX(5px) translateZ(-10px); opacity: 0.8; }
+        .photo-card[data-index="2"] { z-index: 2; transform: rotateY(10deg) translateX(10px) translateZ(-20px); opacity: 0.6; }
+        .photo-card[data-index="3"] { z-index: 1; transform: rotateY(15deg) translateX(15px) translateZ(-30px); opacity: 0.4; }
+
+
+        /* --- 7. Final 3D Card Flip --- */
+        #final-card-container {
+            perspective: 1000px;
+            width: 300px;
+            height: 400px;
+            cursor: pointer;
+        }
+
+        #final-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s;
+        }
+
+        #final-card.open {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: var(--accent-color);
+        }
+
+        .card-front {
+            background: var(--secondary-color);
+            color: var(--accent-color);
+        }
+        
+        .card-back {
+            transform: rotateY(180deg);
+            text-align: left;
+            overflow-y: auto;
+        }
+        
+        .angel-icon {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="birthday-music" loop>
         <source src="https://s3-us-west-2.amazonaws.com/1hbcf/Abigail.mp3" type="audio/mp3">
     </audio>
 
